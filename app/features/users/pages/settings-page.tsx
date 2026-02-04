@@ -126,7 +126,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
                         defaultValue={loaderData.user.role}
                         description ="What role do you identify the most with?"
                         required
-                        id="role"
                         name="role"
                         placeholder="Select a role"
                         options={[

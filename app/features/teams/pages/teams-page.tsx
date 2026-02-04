@@ -24,6 +24,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
                 id={team.team_id}
                 leaderUsername={team.team_leader.username}
                 leaderAvatarUrl={team.team_leader.avatar}
+                avatarFallback={team.team_leader.username[0] ?? "U"}
                 roles={team.roles.split(",")}
                 description={team.product_description}
               />

@@ -9,9 +9,7 @@ const openai = new OpenAI();
 
 const IdeaSchema = z.object({
   title: z.string(),
-  description: z.string({
-    description: "A short description of the idea. 100 characters max.",
-  }),
+  description: z.string().describe("A short description of the idea. 100 characters max."),
   problem: z.string(),
   solution: z.string(),
   category: z.enum([

@@ -66,7 +66,7 @@ export const createReply = async (
     const { count } = await client
       .from("post_upvotes")
       .select("*", { count: "exact", head: true })
-      .eq("post_id", postId)
+      .eq("post_id", Number(postId))
       .eq("profile_id", userId);
     if (count === 0) {
       await client.from("post_upvotes").insert({

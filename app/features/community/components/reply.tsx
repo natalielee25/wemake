@@ -9,7 +9,14 @@ import {
 import { useEffect, useState } from "react";
 import { Textarea } from "~/common/components/ui/textarea";
 import { DateTime } from "luxon";
-import { action } from "../pages/post-page";
+
+type ReplyActionData = {
+  ok?: boolean;
+  formErrors?: {
+    reply?: string[];
+    topLevelId?: string[];
+  };
+};
 
 interface ReplyProps {
   name: string;
@@ -41,7 +48,7 @@ export function Reply({
   topLevelId,
   replies,
 }: ReplyProps) {
-  const actionData = useActionData<typeof action>();
+  const actionData = useActionData() as ReplyActionData | undefined;
   const [replying, setReplying] = useState(false);
   const toggleReplying = () => setReplying((prev) => !prev);
   const {

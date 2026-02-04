@@ -22,7 +22,7 @@ export default function ProfilePostsPage({ loaderData }: Route.ComponentProps) {
                 author={post.author}
                 authorAvatarUrl={post.author_avatar}
                 category={post.topic}
-                postedAt={post.created_at}
+                timeAgo={post.created_at}
                 expanded
                 />
             ))}

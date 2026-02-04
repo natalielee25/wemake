@@ -3,6 +3,7 @@ import { z } from "zod";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/leaderboards-layout";
 import { getProductPagesByDateRange } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 const searchParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -33,6 +34,7 @@ function getDateRange(pathname: string) {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
   const url = new URL(request.url);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
@@ -46,7 +48,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const dateRange = getDateRange(url.pathname);
   if (dateRange) {
-    const totalPages = await getProductPagesByDateRange(dateRange);
+    const totalPages = await getProductPagesByDateRange(client, dateRange);
     if (totalPages > 0 && parsedData.page > totalPages) {
       throw data(
         { error_code: "page_out_of_range", message: `Page ${parsedData.page} does not exist.` },

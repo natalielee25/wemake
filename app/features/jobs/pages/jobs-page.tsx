@@ -9,6 +9,7 @@ import { cn } from "~/lib/utils";
 import { getJobs } from "~/features/jobs/queries";
 import { z } from "zod";
 import { makeSSRClient } from "~/supa-client";
+import type { Database } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
     return [
@@ -44,9 +45,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client, headers } = makeSSRClient(request);
   const jobs = await getJobs(client, {
     limit: 40,
-    location: parsedData.location,
-    type: parsedData.type,
-    salary: parsedData.salary,
+    location: parsedData.location as Database["public"]["Enums"]["location"] | undefined,
+    type: parsedData.type as Database["public"]["Enums"]["job_type"] | undefined,
+    salary: parsedData.salary as Database["public"]["Enums"]["salary_range"] | undefined,
   });
   return { jobs };
 };

@@ -59,7 +59,10 @@ export const makeSSRClient = (request: Request) => {
       {
         cookies: {
           getAll() {
-            return parseCookieHeader(request.headers.get("Cookie") ?? "");
+            const cookies = parseCookieHeader(request.headers.get("Cookie") ?? "");
+            return cookies
+              .filter((cookie): cookie is { name: string; value: string } => cookie.value !== undefined)
+              .map(({ name, value }) => ({ name, value }));
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value, options }) => {

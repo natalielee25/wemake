@@ -70,7 +70,7 @@ export const getPosts = async (
     const { data, error } = await client
       .from("community_post_detail")
       .select("*")
-      .eq("post_id", postId)
+      .eq("post_id", Number(postId))
       .order("created_at", { ascending: false })
       .single();
     if (error) throw error;
@@ -101,7 +101,7 @@ export const getPosts = async (
         )
         `
       )
-      .eq("post_id", postId);
+      .eq("post_id", Number(postId));
     if (error) throw error;
     return data;
   };

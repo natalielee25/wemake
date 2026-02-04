@@ -6,7 +6,6 @@ import AuthButtons from "../components/auth-buttons";
 import { LoaderCircle } from "lucide-react";
 import { z } from "zod";
 import { makeSSRClient } from "~/supa-client";
-import { log } from "console";
 
 export const meta: Route.MetaFunction = () => {
   return [
