@@ -1,7 +1,7 @@
 import type { Route } from "./+types/my-profile-page";
 import { redirect } from "react-router";
 import { makeSSRClient } from "~/supa-client";
-import { getUserById } from "../queries";
+import { ensureUserProfile } from "../queries";
 
 //export const meta: Route.MetaFunction = () => [{ title: "My Profile | wemake" }];
 
@@ -11,7 +11,7 @@ export async function loader({ request }: Route.LoaderArgs) {
        data: { user },
      } = await client.auth.getUser();
      if (user) {
-       const profile = await getUserById(client, { id: user.id });
+       const profile = await ensureUserProfile(client, { id: user.id });
        console.log(profile, "profile");
        return redirect(`/users/${encodeURIComponent(profile.username)}`);
      }

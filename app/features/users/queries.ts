@@ -53,6 +53,103 @@ export const getUserById = async (
     return data;
   };
 
+export const getFollowCounts = async (
+  client: SupabaseClient<Database>,
+  { profileId }: { profileId: string }
+) => {
+  const { count: followers, error: followersError } = await client
+    .from("follows")
+    .select("*", { count: "exact", head: true })
+    .eq("following_id", profileId);
+  if (followersError) {
+    throw followersError;
+  }
+
+  const { count: following, error: followingError } = await client
+    .from("follows")
+    .select("*", { count: "exact", head: true })
+    .eq("follower_id", profileId);
+  if (followingError) {
+    throw followingError;
+  }
+
+  return {
+    followers: followers ?? 0,
+    following: following ?? 0,
+  };
+};
+
+export const ensureUserProfile = async (
+  client: SupabaseClient<Database>,
+  { id }: { id: string }
+) => {
+  try {
+    return await getUserById(client, { id });
+  } catch (error) {
+    const pgError = error as { code?: string };
+    if (pgError.code !== "PGRST116") {
+      throw error;
+    }
+  }
+
+  const {
+    data: { user },
+    error: authError,
+  } = await client.auth.getUser();
+  if (authError || !user || user.id !== id) {
+    throw authError ?? new Error("Unable to initialize profile");
+  }
+
+  const metadata = user.user_metadata ?? {};
+  const rawUsername =
+    metadata.preferred_username ??
+    metadata.user_name ??
+    metadata.username ??
+    user.email?.split("@")[0] ??
+    "user";
+  const usernameBase =
+    String(rawUsername)
+      .toLowerCase()
+      .replace(/[^a-z0-9_]/g, "")
+      .slice(0, 16) || "user";
+  const name = metadata.name ?? metadata.full_name ?? "Anonymous";
+  const avatar = metadata.avatar_url ?? null;
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const suffix = Math.random().toString(36).slice(2, 7);
+    const username = `${usernameBase}${suffix}`;
+    const { data, error } = await client
+      .from("profiles")
+      .insert({
+        profile_id: id,
+        name,
+        username,
+        avatar,
+        role: "developer",
+      })
+      .select(
+        `
+          profile_id,
+          name,
+          username,
+          avatar,
+          headline,
+          bio,
+          role
+        `
+      )
+      .single();
+    if (!error) {
+      return data;
+    }
+    if (error.code !== "23505") {
+      throw error;
+    }
+  }
+
+  throw new Error("Unable to create a unique username");
+};
+
 export const getUserProducts = async (
     client: SupabaseClient<Database>,
     { username }: { username: string }

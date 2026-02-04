@@ -1,4 +1,5 @@
-CREATE OR REPLACE VIEW gpt_ideas_view AS
+CREATE OR REPLACE VIEW gpt_ideas_view
+WITH (security_invoker = true) AS
 SELECT
     gpt_ideas.gpt_idea_id,
     CASE WHEN gpt_ideas.claimed_at IS NULL THEN gpt_ideas.idea ELSE 'ClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimed' END AS idea,
@@ -9,5 +10,3 @@ SELECT
 FROM public.gpt_ideas
 LEFT JOIN public.gpt_ideas_likes USING(gpt_idea_id)
 GROUP BY gpt_ideas.gpt_idea_id;
-
-SELECT * FROM gpt_ideas_view

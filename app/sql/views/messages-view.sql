@@ -1,4 +1,5 @@
-CREATE OR REPLACE VIEW messages_view AS
+CREATE OR REPLACE VIEW messages_view
+WITH (security_invoker = true) AS
 SELECT
   m1.message_room_id,
   profiles.name,

@@ -8,6 +8,12 @@ import type { MergeDeep, SetNonNullable, SetFieldType } from "type-fest";
 import type { Database as SupabaseDatabase} from "database.types";
 import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL;
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
 export type Database = MergeDeep<
 	SupabaseDatabase,
     {
@@ -46,16 +52,15 @@ export type Database = MergeDeep<
 >;
 
 export const browserClient = createBrowserClient<Database>(
-    "https://bkeafbnharamguxsvwnu.supabase.co",
-    "sb_publishable_gRrYLIbiuJG3imtUXcbS8w_mjEm_yhn"
-
+    supabaseUrl!,
+    supabaseAnonKey!
 );
 
 export const makeSSRClient = (request: Request) => {
     const headers = new Headers();
     const serverSideClient = createServerClient<Database>(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!,
+      supabaseUrl!,
+      supabaseAnonKey!,
       {
         cookies: {
           getAll() {
@@ -83,6 +88,6 @@ export const makeSSRClient = (request: Request) => {
   };
 
   export const adminClient = createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    supabaseUrl!,
+    supabaseServiceRoleKey!
   );

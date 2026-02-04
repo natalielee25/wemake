@@ -1,4 +1,5 @@
-CREATE OR REPLACE VIEW product_overview_view AS
+CREATE OR REPLACE VIEW product_overview_view
+WITH (security_invoker = true) AS
 SELECT
   product_id,
   name,
@@ -10,7 +11,7 @@ SELECT
   stats->>'upvotes' AS upvotes,
   stats->>'views' AS views,
   stats->>'reviews' AS reviews,
-  AVG(product_reviews.rating) AS average_rating,
+  AVG(product_reviews.rating) AS average_rating
 FROM public.products
 LEFT JOIN public.reviews AS product_reviews USING (product_id)
 GROUP BY product_id;

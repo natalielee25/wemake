@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Label } from "~/common/components/ui/label";
 import { Input } from "~/common/components/ui/input";
 import { Button } from "~/common/components/ui/button";
-import { getLoggedInUserId, getUserById } from "../queries";
+import { ensureUserProfile, getLoggedInUserId } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 import { z } from "zod";
 import { updateUser, updateUserAvatar } from "../mutations";
@@ -23,7 +23,7 @@ export const meta: Route.MetaFunction = () => {
 export const loader = async ({ request }: Route.LoaderArgs) => {
     const { client } = makeSSRClient(request);
     const userId = await getLoggedInUserId(client);
-    const user = await getUserById(client, { id: userId });
+    const user = await ensureUserProfile(client, { id: userId });
     return { user };
   };
   

@@ -33,7 +33,7 @@ export default function ProductOverviewLayout({
 }: Route.ComponentProps) {
     const fetcher = useFetcher();
     return (
-    <div space-y-10>
+    <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-5">
           <div className="size-40 rounded-xl overflow-hidden shadow-xl bg-primary/50">

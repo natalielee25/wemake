@@ -7,7 +7,7 @@ import { Badge } from "~/common/components/ui/badge";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "~/common/components/ui/button";
 import type { Route } from "./+types/profile-layout";
-import { getUserProfile } from "../queries";
+import { getFollowCounts, getUserProfile } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({ data }) => {
@@ -22,7 +22,8 @@ export const loader = async ({
     const user = await getUserProfile(client, {
         username: params.username,
   });
-    return { user };
+    const counts = await getFollowCounts(client, { profileId: user.profile_id });
+    return { user, counts };
   };
   
   export default function ProfileLayout({
@@ -88,8 +89,12 @@ export const loader = async ({
             	<Badge variant={"secondary"} className="capitalize">
                 	{loaderData.user.role}
                 </Badge>
-                <Badge variant={"secondary"}>100 followers</Badge>
-                <Badge variant={"secondary"}>130 following</Badge>
+                <Badge variant={"secondary"}>
+                  {loaderData.counts.followers} followers
+                </Badge>
+                <Badge variant={"secondary"}>
+                  {loaderData.counts.following} following
+                </Badge>
                 </div>
             </div>
         </div>
@@ -100,6 +105,7 @@ export const loader = async ({
           	{ label: "Posts", to: `/users/${loaderData.user.username}/posts` }
        ].map((item) => (
             <NavLink
+                key={item.to}
                 end
                 className={({isActive}) =>
                     cn(
