@@ -30,6 +30,7 @@ export default [
                     index("features/products/pages/product-reviews-page.tsx"),
                 ]),
             ]),
+            route("/upvote", "features/products/pages/upvote-product-page.tsx"),
             route("/visit", "features/products/pages/product-visit-page.tsx"),
         ]),
     ]),

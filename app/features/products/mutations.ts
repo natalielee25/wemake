@@ -60,3 +60,32 @@ export const createProduct = async (
     if (error) throw error;
     return data.product_id;
   };
+
+export const toggleProductUpvote = async (
+  client: SupabaseClient<Database>,
+  { productId, userId }: { productId: string; userId: string }
+) => {
+  const productIdNumber = Number(productId);
+  const { count, error: countError } = await client
+    .from("product_upvotes")
+    .select("*", { count: "exact", head: true })
+    .eq("product_id", productIdNumber)
+    .eq("profile_id", userId);
+  if (countError) {
+    throw countError;
+  }
+  if (count === 0) {
+    const { error } = await client.from("product_upvotes").insert({
+      product_id: productIdNumber,
+      profile_id: userId,
+    });
+    if (error) throw error;
+  } else {
+    const { error } = await client
+      .from("product_upvotes")
+      .delete()
+      .eq("product_id", productIdNumber)
+      .eq("profile_id", userId);
+    if (error) throw error;
+  }
+};
