@@ -1,0 +1,4 @@
+{"location":"dashboard-layout.tsx:8","message":"DashboardLayout mounted","data":{"initialPath":"/my/dashboard"},"timestamp":1769740458804,"sessionId":"debug-session","runId":"pre-fix","hypothesisId":"H2"}
+{"location":"dashboard-layout.tsx:12","message":"DashboardLayout location change","data":{"pathname":"/my/dashboard","search":"","hash":""},"timestamp":1769740458805,"sessionId":"debug-session","runId":"pre-fix","hypothesisId":"H3"}
+{"location":"dashboard-layout.tsx:8","message":"DashboardLayout mounted","data":{"initialPath":"/my/dashboard"},"timestamp":1769740458805,"sessionId":"debug-session","runId":"pre-fix","hypothesisId":"H2"}
+{"location":"dashboard-layout.tsx:12","message":"DashboardLayout location change","data":{"pathname":"/my/dashboard","search":"","hash":""},"timestamp":1769740458805,"sessionId":"debug-session","runId":"pre-fix","hypothesisId":"H3"}
