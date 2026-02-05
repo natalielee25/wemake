@@ -48,7 +48,7 @@ export const loader =async ({request}: Route.LoaderArgs) => {
 export default function HomePage({loaderData}: Route.ComponentProps) {
     return (
         <div className="px-18 space-y-40">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 <div>
                     <h2 className="text-5xl font-bold leading-tight tracking-tighter">Today's Products</h2>
                     <p className="text-xl font-light text-foreground/80">The best products made by our community today.</p>
@@ -68,7 +68,7 @@ export default function HomePage({loaderData}: Route.ComponentProps) {
                     />
                     ))}
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 <div>
                     <h2 className="text-5xl font-bold leading-tight tracking-tighter">Latest Discussions</h2>
                     <p className="text-xl font-light text-foreground/80">The latest discussions from our community.</p>
@@ -89,7 +89,7 @@ export default function HomePage({loaderData}: Route.ComponentProps) {
                 />
             ))}
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 <div>
                     <h2 className="text-5xl font-bold leading-tight tracking-tighter">IdeasGPT</h2>
                     <p className="text-xl font-light text-foreground/80">Find ideas for your next project.</p>
@@ -108,7 +108,7 @@ export default function HomePage({loaderData}: Route.ComponentProps) {
                     />
                 ))}
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
                 <div>
                     <h2 className="text-5xl font-bold leading-tight tracking-tighter">Latest Jobs</h2>
                     <p className="text-xl font-light text-foreground/80">Find your dream job.</p>
@@ -131,7 +131,7 @@ export default function HomePage({loaderData}: Route.ComponentProps) {
                 />
                 ))}
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
                 <div>
                     <h2 className="text-5xl font-bold leading-tight tracking-tighter">Find a teammate.</h2>
                     <p className="text-xl font-light text-foreground/80">Join a team looking for a new member.</p>

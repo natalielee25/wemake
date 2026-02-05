@@ -29,10 +29,13 @@ export function IdeaCard({
       <CardHeader>
       	<Link to={claimed || owner ? "" : `/ideas/${id}`}>
           <CardTitle className="text-xl">
-            <span className={cn(claimed
-              ? "bg-muted-foreground break-all selection:bg-muted-foreground text-muted-foreground"
-              : ""
-            )}
+            <span
+              className={cn(
+                claimed
+                  ? "bg-muted-foreground break-words selection:bg-muted-foreground text-muted-foreground"
+                  : "",
+                "line-clamp-2"
+              )}
             >
               {title}
             </span>

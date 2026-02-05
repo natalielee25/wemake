@@ -28,12 +28,12 @@ export function ProductCard({
 }: ProductCardProps) {
   return (
     <Link to={`/products/${id}`} className="block">
-      <Card className="w-full flex flex-row items-start justify-between bg-transparent hover:bg-card/50">
-        <CardHeader className="flex-1 flex flex-col gap-2 text-left">
-          <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
+      <Card className="w-full flex flex-row items-start justify-between gap-3 bg-transparent hover:bg-card/50">
+        <CardHeader className="flex-1 min-w-0 flex flex-col gap-2 text-left">
+          <CardTitle className="text-2xl font-semibold leading-none tracking-tight line-clamp-1">
             {name}
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-muted-foreground line-clamp-2">
             {description}
           </CardDescription>
           <div className="flex items-center gap-4">
