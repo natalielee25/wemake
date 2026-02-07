@@ -10,9 +10,9 @@ export const getJobs = async (
       salary,
     }: {
       limit: number;
-      location?: string;
-      type?: string;
-      salary?: string;
+      location?: Database["public"]["Enums"]["location"];
+      type?: Database["public"]["Enums"]["job_type"];
+      salary?: Database["public"]["Enums"]["salary_range"];
     }
   ) => {
     const baseQuery = client
@@ -55,7 +55,7 @@ export const getJobById = async (
     const { data, error } = await client
       .from("jobs")
       .select("*")
-      .eq("job_id", jobId)
+      .eq("job_id", Number(jobId))
       .single();
     if (error) throw error;
     return data;

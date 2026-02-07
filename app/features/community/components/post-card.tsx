@@ -62,9 +62,9 @@ export function PostCard({
             <AvatarFallback>{author[0]}</AvatarFallback>
             {authorAvatarUrl && <AvatarImage src={authorAvatarUrl} />}
           </Avatar>
-          <div className="space-y-2 flex-1">
-            <CardTitle className="whitespace-nowrap">{title}</CardTitle>
-            <div className="flex gap-2 text-sm leading-tight text-muted-foreground whitespace-nowrap">
+          <div className="space-y-2 flex-1 min-w-0">
+            <CardTitle className="line-clamp-1">{title}</CardTitle>
+            <div className="flex gap-2 text-sm leading-tight text-muted-foreground line-clamp-1">
               <span>
                 {author} on {category}
               </span>

@@ -12,6 +12,7 @@ import { getLoggedInUserId } from "~/features/users/queries";
 import { z } from "zod";
 import { getCategories } from "../queries";
 import { createProduct } from "../mutations";
+import { useNavigation } from "react-router";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -42,30 +43,42 @@ export const action = async ({ request }: Route.ActionArgs) => {
   if (!success) {
     return { formErrors: error.flatten().fieldErrors };
   }
-  const { icon, ...rest } = data;
-  const { data: uploadData, error: uploadError } = await client.storage
-    .from("icons")
-    .upload(`${userId}/${Date.now()}`, icon, {
-      contentType: icon.type,
-      upsert: false,
+  try {
+    const { icon, ...rest } = data;
+    const { data: uploadData, error: uploadError } = await client.storage
+      .from("icons")
+      .upload(`${userId}/${Date.now()}`, icon, {
+        contentType: icon.type,
+        upsert: false,
+      });
+    if (uploadError) {
+      return { formErrors: { icon: ["Failed to upload icon"] } };
+    }
+    const {
+      data: { publicUrl },
+    } = await client.storage.from("icons").getPublicUrl(uploadData.path);
+    const productId = await createProduct(client, {
+      name: rest.name,
+      tagline: rest.tagline,
+      description: rest.description,
+      howItWorks: rest.howItWorks,
+      url: rest.url,
+      iconUrl: publicUrl,
+      categoryId: rest.category,
+      userId,
     });
-  if (uploadError) {
-    return { formErrors: { icon: ["Failed to upload icon"] } };
+    return redirect(`/products/${productId}`);
+  } catch (error) {
+    console.error(error);
+    const message =
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error &&
+      typeof (error as { message: unknown }).message === "string"
+        ? (error as { message: string }).message
+        : "Failed to submit product";
+    return { submitError: message };
   }
-  const {
-    data: { publicUrl },
-  } = await client.storage.from("icons").getPublicUrl(uploadData.path);
-  const productId = await createProduct(client, {
-    name: rest.name,
-    tagline: rest.tagline,
-    description: rest.description,
-    howItWorks: rest.howItWorks,
-    url: rest.url,
-    iconUrl: publicUrl,
-    categoryId: rest.category,
-    userId,
-  });
-  return redirect(`/products/${productId}`);
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -79,6 +92,9 @@ export default function SubmitPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
   const [icon, setIcon] = useState<string | null>(null);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.files){
@@ -184,7 +200,12 @@ export default function SubmitPage({
             actionData?.formErrors?.category && (
               <p className="text-red-500">{actionData.formErrors.category}</p>
             )}
-          <Button type="submit" className="w-full size-lg">Submit</Button>
+          <Button type="submit" className="w-full size-lg" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+          {actionData && "submitError" in actionData && (
+            <p className="text-red-500">{actionData.submitError}</p>
+          )}
         </div>
         <div className="space-y-2 flex flex-col">
           <div className="size-40 rounded-xl shadow-xl overflow-hidden">
@@ -195,7 +216,14 @@ export default function SubmitPage({
               Icon
               <small className="text-muted-foreground">This is the icon of your product.</small>
             </Label>
-            <Input type="file" className="w-full" onChange={onChange} required name="icon"/>
+            <Input
+              type="file"
+              className="w-full"
+              onChange={onChange}
+              required
+              name="icon"
+              accept="image/*"
+            />
             {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.icon && (

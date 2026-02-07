@@ -29,9 +29,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
                         <MessageCard
                             key={message.message_room_id}
                             id={message.message_room_id.toString()}
-                            name={message.name}
-                            lastMessage={message.last_message}
-                            avatarUrl={message.avatar}
+                            name={message.name ?? "Unknown"}
+                            lastMessage={message.last_message ?? ""}
+                            avatarUrl={message.avatar ?? ""}
+                            avatarFallback={(message.name ?? "U")[0]}
                         />
                     ))}
                 </SidebarMenu>

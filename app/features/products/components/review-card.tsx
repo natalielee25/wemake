@@ -28,8 +28,7 @@ export function ReviewCard({
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarFallback>{username[0]}</AvatarFallback>
-          <AvatarImage src={avatarUrl} />
-          {avatarUrl ? <AvatarImage src={avatarUrl} /> : null}
+          <AvatarImage src={avatarUrl ?? undefined} />
         </Avatar>
         <div>
           <h4 className="text-lg font-bold">{username}</h4>

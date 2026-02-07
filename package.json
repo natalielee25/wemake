@@ -5,7 +5,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "node -r dotenv/config node_modules/.bin/react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -57,6 +57,7 @@
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.8",
     "supabase": "^2.72.8",
     "tailwindcss": "^4.1.13",

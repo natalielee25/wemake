@@ -1,4 +1,5 @@
 import { Form } from "react-router";
+import type { Route } from "./+types/team-page";
 import { PageHeader } from "~/common/components/page-header";
 import { Avatar, AvatarImage, AvatarFallback } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
@@ -39,10 +40,10 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
                     },
                     {
                         title: "AvailableEquity",
-                        value: loaderData.team.available_equity,
+                        value: loaderData.team.equity_split,
                     },
 
-                ].map(item => <Card>
+                ].map((item) => <Card key={item.title}>
                     <CardHeader>
                         <CardTitle className="text-sm font-medium text-muted-foreground">{item.title}</CardTitle>
                         <CardContent className="p-0 font-bold capitalize text-2xl">
@@ -60,7 +61,7 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
                         </CardTitle>
                         <CardContent className="p-0 font-bold text-2xl">
                         <ul className="text-lg list-disc list-inside">
-                            {loaderData.team.looking_for.split(",").map((item) => <li key={item} >
+                            {loaderData.team.roles.split(",").map((item: string) => <li key={item} >
                                 {item}
                                 </li>)}
                         </ul>

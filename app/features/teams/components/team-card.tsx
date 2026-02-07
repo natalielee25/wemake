@@ -28,9 +28,9 @@ export function TeamCard({
 }: TeamCardProps) {
   return (
     <Link to={`/teams/${id}`} className="block">
-      <Card className="bg-transparent hover:bg-card/50 flex flex-col justify-between transition-colors h-full ">
-        <CardHeader className="flex flex-row items-center leading-loose">
-          <CardTitle>
+      <Card className="bg-transparent hover:bg-card/50 flex flex-col justify-between transition-colors h-full">
+        <CardHeader className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary" className="inline-flex shadow-sm items-center text-base gap-2">
               <span>@{leaderUsername}</span>
               <Avatar className="size-5">
@@ -38,13 +38,17 @@ export function TeamCard({
                 {leaderAvatarUrl ? <AvatarImage src={leaderAvatarUrl} /> : null}
               </Avatar>
             </Badge>
-            <span>is looking for</span>
+            <span className="text-sm text-muted-foreground">is looking for</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
             {roles.map((role) => (
-              <Badge key={role} className="text-base ml-1">
+              <Badge key={role} className="text-base">
                 {role}
               </Badge>
             ))}
-            <span>{description}</span>
+          </div>
+          <CardTitle className="text-base font-normal text-muted-foreground line-clamp-2">
+            {description}
           </CardTitle>
         </CardHeader>
         <CardFooter className="justify-end">

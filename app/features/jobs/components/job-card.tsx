@@ -39,19 +39,19 @@ export function JobCard({
     <Link to={`/jobs/${id}`}>
       <Card className="bg-transparent transition-colors hover:bg-card/50">
         <CardHeader>
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-4 min-w-0">
             <img
               src={companyLogoUrl}
               alt={`${company} Logo`}
               className="size-10 rounded-full"
             />
-            <div className="space-x-2">
-              <span className="text-accent-foreground">{company}</span>
+            <div className="space-x-2 min-w-0">
+              <span className="text-accent-foreground truncate">{company}</span>
               <span className="text-xs text-muted-foreground">
                 {DateTime.fromISO(timeAgo).toRelative()}</span>
             </div>
           </div>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="line-clamp-2">{title}</CardTitle>
         </CardHeader>
         <CardContent>
           <Badge variant="outline" className="capitalize">

@@ -77,7 +77,7 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
       <div className="space-y-7 col-span-2 sticky top-20 mt-32 p-6 border rounded-lg">
         <div className="flex flex-col">
           <span className="text-2xl font-medium">
-            ${loaderData.job.salary_min} - ${loaderData.job.salary_max}
+            {loaderData.job.salary_range}
           </span>
           <span className="text-sm text-muted-foreground"> Average Salary </span>
         </div>

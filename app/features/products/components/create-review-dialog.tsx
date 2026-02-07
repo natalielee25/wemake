@@ -5,12 +5,19 @@ import { Button } from "~/common/components/ui/button";
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "~/common/components/ui/dialog"
 import InputPair from "~/common/components/ui/input-pair";
 import { Label } from "~/common/components/ui/label";
-import { action } from "../pages/product-reviews-page";
+
+type ReviewActionData = {
+    ok?: boolean;
+    formErrors?: {
+        rating?: string[];
+        review?: string[];
+    };
+};
 
 export default function CreateReviewDialog() {
     const [rating, setRating] = useState<number>(0);
     const [hoveredStar, setHoveredStar] = useState<number>(0);
-    const actionData = useActionData<typeof action>();
+    const actionData = useActionData() as ReviewActionData | undefined;
     return(
     <DialogContent className="text-left">
         <DialogHeader>

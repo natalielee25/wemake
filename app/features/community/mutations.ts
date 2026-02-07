@@ -62,22 +62,31 @@ export const createReply = async (
     client: SupabaseClient<Database>,
     { postId, userId }: { postId: string; userId: string }
   ) => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    const { count } = await client
+    const { count, error: countError } = await client
       .from("post_upvotes")
       .select("*", { count: "exact", head: true })
-      .eq("post_id", postId)
+      .eq("post_id", Number(postId))
       .eq("profile_id", userId);
+    if (countError) {
+      throw countError;
+    }
+
     if (count === 0) {
-      await client.from("post_upvotes").insert({
+      const { error } = await client.from("post_upvotes").insert({
         post_id: Number(postId),
         profile_id: userId,
       });
+      if (error) {
+        throw error;
+      }
     } else {
-      await client
+      const { error } = await client
         .from("post_upvotes")
         .delete()
         .eq("post_id", Number(postId))
         .eq("profile_id", userId);
+      if (error) {
+        throw error;
+      }
     }
   };

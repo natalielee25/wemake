@@ -16,7 +16,7 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
       .from("products")
       .select("product_id")
       .eq("profile_id", userId)
-      .eq("product_id", params.productId)
+      .eq("product_id", Number(params.productId))
       .single();
     if (error) {
       throw redirect("/my/dashboard/products");

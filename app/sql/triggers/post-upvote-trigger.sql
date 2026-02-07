@@ -22,7 +22,9 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 BEGIN
-    UPDATE public.posts SET upvotes = upvotes - 1 WHERE post_id = OLD.post_id;
+    UPDATE public.posts
+    SET upvotes = GREATEST(upvotes - 1, 0)
+    WHERE post_id = OLD.post_id;
     RETURN OLD;
 END;
 $$;

@@ -9,7 +9,14 @@ import {
 import { useEffect, useState } from "react";
 import { Textarea } from "~/common/components/ui/textarea";
 import { DateTime } from "luxon";
-import { action } from "../pages/post-page";
+
+type ReplyActionData = {
+  ok?: boolean;
+  formErrors?: {
+    reply?: string[];
+    topLevelId?: string[];
+  };
+};
 
 interface ReplyProps {
   name: string;
@@ -41,7 +48,7 @@ export function Reply({
   topLevelId,
   replies,
 }: ReplyProps) {
-  const actionData = useActionData<typeof action>();
+  const actionData = useActionData() as ReplyActionData | undefined;
   const [replying, setReplying] = useState(false);
   const toggleReplying = () => setReplying((prev) => !prev);
   const {
@@ -66,7 +73,7 @@ export function Reply({
         </Avatar>
         <div className="flex flex-col gap-2 items-start w-full">
           <div className="flex gap-2 items-center">
-            <Link to={`/users/@${username}`}>
+            <Link to={`/users/${username}`}>
             	<h4 className="font-medium">{name}</h4>
             </Link>
             <DotIcon className="size-5" />
@@ -111,6 +118,7 @@ export function Reply({
         <div className="pl-20 w-full">
           {replies.map((reply) => (
             <Reply
+              key={reply.post_reply_id}
               name={reply.user.name}
               username={reply.user.username}
               avatarUrl={reply.user.avatar}

@@ -20,9 +20,10 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
   return [{ title: `${loaderData.post.title} on ${loaderData.post.topic_name} | wemake` }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const post = await getPostById(params.postId);
-  const replies = await getReplies(params.postId);
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const post = await getPostById(client, { postId: params.postId });
+  const replies = await getReplies(client, { postId: params.postId });
   return { post, replies };
 };
 
@@ -163,6 +164,7 @@ export default function PostPage({
             <div className="flex flex-col gap-5">
             {loaderData.replies.map((reply) => (
               <Reply
+                key={reply.post_reply_id}
                 name={reply.user.name}
                 username={reply.user.username}
                 avatarUrl={reply.user.avatar}

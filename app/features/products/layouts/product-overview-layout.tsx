@@ -8,6 +8,7 @@ import { buttonVariants } from "~/common/components/ui/button";
 import type { Route } from "./+types/product-overview-layout";
 import { getProductById } from "../queries";
 import { makeSSRClient } from "~/supa-client";
+import { useFetcher } from "react-router";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -30,8 +31,9 @@ export const loader = async ({
 export default function ProductOverviewLayout({
   loaderData,
 }: Route.ComponentProps) {
+    const fetcher = useFetcher();
     return (
-    <div space-y-10>
+    <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-5">
           <div className="size-40 rounded-xl overflow-hidden shadow-xl bg-primary/50">
@@ -70,10 +72,15 @@ export default function ProductOverviewLayout({
               Visit Website
             </Link>
           </Button>
-          <Button size="lg" className="text-lg h-14 px-6">
-            <ChevronUpIcon className="size-4"/>
-            Upvote ({loaderData.product.upvotes})
-          </Button>
+          <fetcher.Form
+            method="post"
+            action={`/products/${loaderData.product.product_id}/upvote`}
+          >
+            <Button size="lg" className="text-lg h-14 px-6">
+              <ChevronUpIcon className="size-4"/>
+              Upvote ({loaderData.product.upvotes})
+            </Button>
+          </fetcher.Form>
         </div>
       </div>
       <div className="flex gap-2 mt-5 mb-5">

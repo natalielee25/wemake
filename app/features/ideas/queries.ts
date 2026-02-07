@@ -22,7 +22,7 @@ export const getGptIdea = async (
   const { data, error } = await client
     .from("gpt_ideas_view")
     .select("*")
-    .eq("gpt_idea_id", ideaId)
+    .eq("gpt_idea_id", Number(ideaId))
     .single();
   if (error) {
     throw error;

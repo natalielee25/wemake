@@ -1,4 +1,5 @@
-CREATE OR REPLACE VIEW community_post_detail AS
+CREATE OR REPLACE VIEW community_post_detail
+WITH (security_invoker = true) AS
 SELECT
     posts.post_id,
     posts.title,
